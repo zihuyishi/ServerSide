@@ -1,0 +1,29 @@
+class HttpMessage
+{
+pb:
+	vir ParseMessge(const HttpMessage&);
+pv:
+	ZString m_startLine;
+	ZString m_msgHeader;
+	ZString m_msgBody;
+	ZString m_trailers;
+}
+
+class HttpResponse :
+	public HttpMessage
+{
+	ZString m_statusLine;
+	ZString m_genHeader;
+	ZString m_resHeader;
+	ZString m_entHeader;
+}
+
+class HttpRequest :
+	public HttpMessage
+{
+pv:
+	ZString m_reqLine;
+	ZString m_genHeader;
+	ZString m_reqHeader;
+	ZString m_entHeader;
+}
