@@ -12,12 +12,37 @@ ZHTTPBEGIN
 //define Type
 
 #define ZInt		int
+#define ZUInt		unsigned int
 #define ZInt32		__int32
 #define ZInt64		__int64
-#define ZString		std::string
+#define ZLong		long
+#define ZULong		unsigned long
+#define ZStringA	std::string
 #define ZStringW	std::wstring
+
+#ifdef _UNICODE
+#define ZString		ZStringW
+#else
+#define ZString		ZStringA
+#endif
+
 #define ZDouble		double
 #define ZBool		bool
+#define ZTrue		true
+#define ZFalse		false
+
+class UnCopyable
+{
+protected:
+	UnCopyable()
+	{}
+	~UnCopyable()
+	{}
+private:
+	UnCopyable(const UnCopyable&);
+	UnCopyable& operator=(const UnCopyable&);
+};
+
 
 ZHTTPEND
 #endif

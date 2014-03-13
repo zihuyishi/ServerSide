@@ -7,6 +7,21 @@
 #include <iostream>
 #include <process.h>
 
+#include "..\include\SystemModule\IOFile.h"
+using ZHttp::CIOFile;
+using namespace std;
+int _tmain(int argc, _TCHAR* argv[])
+{
+	CIOFile file;
+	file.Open(_T("1.txt"));
+	char* buff = new char[1024];
+	file.Read(10512, buff, 512);
+
+	file.Read(0, buff, 512);
+	file.Close();
+	delete[] buff;
+}
+/*
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdio.h>
@@ -122,3 +137,4 @@ void HandleSocket(SOCKET s)
 		&dwThread);
 	CloseHandle(hThread);
 }
+*/

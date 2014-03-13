@@ -65,5 +65,8 @@
     <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp">
       <Filter>SystemModule</Filter>
     </ClCompile>
+    <ClCompile Include="..\include\SystemModule\IOFile.cpp">
+      <Filter>SystemModule</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

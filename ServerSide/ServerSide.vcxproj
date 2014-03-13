@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\Common\ErrorHandle.cpp" />
+    <ClCompile Include="..\include\SystemModule\IOFile.cpp" />
     <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp" />
     <ClCompile Include="ServerSide.cpp" />
     <ClCompile Include="stdafx.cpp" />
