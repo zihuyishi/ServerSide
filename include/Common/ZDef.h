@@ -20,10 +20,14 @@ ZHTTPBEGIN
 #define ZStringA	std::string
 #define ZStringW	std::wstring
 
+#define ZCharW		wchar_t
+#define ZCharA		char
 #ifdef _UNICODE
 #define ZString		ZStringW
+#define ZChar		ZCharW
 #else
 #define ZString		ZStringA
+#define ZChar		ZCharA
 #endif
 
 #define ZDouble		double

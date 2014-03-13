@@ -9,6 +9,8 @@ class CIOFile :
 	public UnCopyable
 {
 public:
+	typedef CIOFile ThisType;
+
 	CIOFile();
 	
 	virtual ~CIOFile();
@@ -21,6 +23,7 @@ public:
 	ZInt Read(ZULong offset, void* outBuf, ZULong length);
 	ZInt Append(ZULong length);
 	ZInt Write(ZULong offset, const void* data, ZULong length);
+	ZInt SaveAs(const ZString& filePath);
 	void Close();
 private:
 	CIOFile(const ZString& filePath);
@@ -28,6 +31,7 @@ private:
 private:
 	HANDLE m_hFile = INVALID_HANDLE_VALUE; 
 	HANDLE m_hMapFile = nullptr;
+	ZString m_filePath;
 
 	ZULong m_mapSize = -1;
 	ZULong m_ulSysGran = 1;
