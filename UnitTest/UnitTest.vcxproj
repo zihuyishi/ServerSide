@@ -81,14 +81,19 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\HttpModule\IWebConnect.h" />
     <ClInclude Include="..\include\SystemModule\IOFile.h" />
+    <ClInclude Include="..\include\SystemModule\WinSockImpl.h" />
     <ClInclude Include="FileTest.h" />
+    <ClInclude Include="SocketTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\SystemModule\IOFile.cpp" />
+    <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp" />
     <ClCompile Include="FileTest.cpp" />
+    <ClCompile Include="SocketTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UnitTest.cpp" />
   </ItemGroup>

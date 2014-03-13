@@ -16,6 +16,9 @@
     <Filter Include="FileTest">
       <UniqueIdentifier>{eb93d828-625e-4f87-9288-2304d1a70326}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SocketTest">
+      <UniqueIdentifier>{516ce3ac-dc3a-4178-8ba0-63e03c330c25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -33,6 +36,15 @@
     <ClInclude Include="..\include\SystemModule\IOFile.h">
       <Filter>FileTest</Filter>
     </ClInclude>
+    <ClInclude Include="SocketTest.h">
+      <Filter>SocketTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SystemModule\WinSockImpl.h">
+      <Filter>SocketTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\HttpModule\IWebConnect.h">
+      <Filter>SocketTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -46,6 +58,12 @@
     </ClCompile>
     <ClCompile Include="..\include\SystemModule\IOFile.cpp">
       <Filter>FileTest</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketTest.cpp">
+      <Filter>SocketTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp">
+      <Filter>SocketTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,23 +13,40 @@
 ZHTTPBEGIN
 
 class CWinSock :
-	public IWebSender,
-	public IWebListener
+	//public IWebConnector,
+	public IWebListener,
+	public IWebSocket,
+	public UnCopyable
 {
-//IWebSender
 public:
-	ZInt Connect(const ZString& Addr, const ZString& Port);
-	ZInt Send(const ZString& content);
+	typedef CWinSock ThisType;
+//construct
+public:
+	CWinSock();
+	~CWinSock();
+
+//IWebConnector
+public:
+	ZInt Connect(const ZCharA* Addr, const ZCharA* Port);
+
 //IWebListener
 public:
-	ZInt Bind(const ZString& Port);
+	ZInt Bind(const ZCharA* Port);
 	ZInt Listen();
+	IWebSocket* Accept();
 
+//IWebSocket
 public:
-	ZString Recv();
+	ZInt Send(const ZCharA* content, ZInt length);
+	ZInt Recv(char* buff, ZULong length);
+	ZInt Shutdown();
 	void Release();
+
 private:
-	SOCKET m_socket;
+	void Init();
+	ZInt createSocket();
+private:
+	SOCKET m_socket = INVALID_SOCKET;
 };
 ZHTTPEND
 #endif
