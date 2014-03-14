@@ -7,10 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerSide", "ServerSide\Se
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47090A2B-59D3-4AB3-8F31-293C6A62E7AD}"
 	ProjectSection(SolutionItems) = preProject
-		ReadMe..MD = ReadMe..MD
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{AC36D7A2-F5F1-42E0-AAD0-311BA915A82F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerTest", "UnitTest\UnitTest.vcxproj", "{AC36D7A2-F5F1-42E0-AAD0-311BA915A82F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

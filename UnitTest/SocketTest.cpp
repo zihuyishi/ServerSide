@@ -22,11 +22,10 @@ unsigned int WINAPI HandleThread(void* lpParam)
 		}
 	});
 	do {
-		iResult = s->Recv(recvbuf, 1);
+		iResult = s->Recv(recvbuf, recvbuflen);
 		if (iResult > 0) {
 			recvbuf[iResult] = 0;
 			std::cout << "recv buffer: " << recvbuf << std::endl;
-			//s->Send(recvbuf, iResult);
 			recvbuf[0] = 0;
 		}
 		else if (iResult == 0) {
@@ -34,23 +33,18 @@ unsigned int WINAPI HandleThread(void* lpParam)
 		}
 		else {
 		}
-	} while (true);
+	} while (false);
 
 	s->Shutdown();
 	s->Release();
 	return 0;
 }
-void Test1()
+void SocketTest1()
 {
 	IWebSocket* connect = ZHttp::CreateConnetionTo("127.0.0.1", "5150");
 	char buffer[1024];
 	for (auto i : { "hi", "zeze", "hehe", "dafsdf" }) {
 		connect->Send(i, strlen(i));
-		/*
-		int iResult = connect->Recv(buffer, 1024);
-		buffer[iResult] = 0;
-		std::cout << "sender buffer:" << buffer << std::endl;
-		*/
 	}
 	connect->Release();
 
@@ -85,7 +79,7 @@ ZUInt __stdcall Test2Thread(void* lpParam)
 	listener->Release();
 	return 0;
 }
-HANDLE Test2()
+HANDLE SocketTest2()
 {
 	HANDLE hThread;
 	ZUInt dwThread;
@@ -99,8 +93,8 @@ HANDLE Test2()
 }
 void SocketTest()
 {
-	HANDLE hThread = Test2();
-	Test1();
+	HANDLE hThread = SocketTest2();
+	SocketTest1();
 	WaitForSingleObject(hThread, INFINITE);
 	CloseHandle(hThread);
 }

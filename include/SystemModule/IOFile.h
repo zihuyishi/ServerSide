@@ -20,6 +20,13 @@ public:
 	*/
 	ZInt Create(const ZString& filePath, ZULong fileSize = 1024);
 	ZInt Open(const ZString& filePath, ZBool bCreate = ZFalse);
+	/**
+	@创建或打开一个可以跨进程共享的FileMapping of Page
+	@name FileMapping名字
+	@fileSize 大小
+	@return >=0 成功
+	*/
+	ZInt OpenPages(const ZString& name, ZULong fileSize = 1024);
 	ZInt Read(ZULong offset, void* outBuf, ZULong length);
 	ZInt Append(ZULong length);
 	ZInt Write(ZULong offset, const void* data, ZULong length);
