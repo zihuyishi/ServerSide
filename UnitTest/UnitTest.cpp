@@ -6,8 +6,10 @@
 #include "SocketTest.h"
 #include "RegexTest.h"
 #include "FunctionTEst.h"
+#include "HttpServerTest.h"
 int _tmain(int argc, _TCHAR* argv[])
 {
+	HttpServerTest();
 	FunctionTest();
 	RegTest();
 	FileTest();

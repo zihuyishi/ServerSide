@@ -43,10 +43,10 @@ unsigned int WINAPI HandleThread(void* lpParam)
 void SocketTest1()
 {
 	IWebSocket* connect = ZHttp::CreateConnetionTo("127.0.0.1", "5150");
-	char buffer[1024];
 	for (auto i : { "hi", "zeze", "hehe", "dafsdf" }) {
 		connect->Send(i, strlen(i));
 	}
+	
 	connect->Release();
 
 }

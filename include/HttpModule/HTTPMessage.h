@@ -25,9 +25,10 @@ namespace HTTPMessage
 		GET = 0,
 		POST = 1,
 		PUT = 2,
-		DELETE = 3,
+		DELE = 3,
 		BAD = -1,
 	};
+	RestMethod StrToRestMethod(const ZStringA& method);
 }
 ZHTTPEND
 #endif
