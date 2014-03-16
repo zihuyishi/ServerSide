@@ -51,6 +51,18 @@
     <ClInclude Include="..\include\SystemModule\WinSockImpl.h">
       <Filter>SystemModule</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\HttpModule\HttpServer.h">
+      <Filter>HttpModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\HttpModule\HttpStruct.h">
+      <Filter>HttpModule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Common\commonRegex.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Common\CommonFunction.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -67,6 +79,15 @@
     </ClCompile>
     <ClCompile Include="..\include\SystemModule\IOFile.cpp">
       <Filter>SystemModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\HttpModule\HttpServer.cpp">
+      <Filter>HttpModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\HttpModule\HttpStruct.cpp">
+      <Filter>HttpModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Common\CommonFunction.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -82,18 +82,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Common\CommonFunction.h" />
+    <ClInclude Include="..\include\HttpModule\HttpStruct.h" />
     <ClInclude Include="..\include\HttpModule\IWebConnect.h" />
     <ClInclude Include="..\include\SystemModule\IOFile.h" />
     <ClInclude Include="..\include\SystemModule\WinSockImpl.h" />
     <ClInclude Include="FileTest.h" />
+    <ClInclude Include="HttpServerTest.h" />
+    <ClInclude Include="RegexTest.h" />
     <ClInclude Include="SocketTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="FunctionTEst.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\Common\CommonFunction.cpp" />
+    <ClCompile Include="..\include\HttpModule\HttpStruct.cpp" />
     <ClCompile Include="..\include\SystemModule\IOFile.cpp" />
     <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp" />
     <ClCompile Include="FileTest.cpp" />
+    <ClCompile Include="FunctionTest.cpp" />
+    <ClCompile Include="HttpServerTest.cpp" />
+    <ClCompile Include="RegexTest.cpp" />
     <ClCompile Include="SocketTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UnitTest.cpp" />

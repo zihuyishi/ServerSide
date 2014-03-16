@@ -81,9 +81,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Common\CommonFunction.h" />
+    <ClInclude Include="..\include\Common\commonRegex.h" />
     <ClInclude Include="..\include\Common\ErrorHandle.h" />
     <ClInclude Include="..\include\Common\ZDef.h" />
     <ClInclude Include="..\include\HttpModule\HTTPMessage.h" />
+    <ClInclude Include="..\include\HttpModule\HttpServer.h" />
+    <ClInclude Include="..\include\HttpModule\HttpStruct.h" />
     <ClInclude Include="..\include\HttpModule\IWebConnect.h" />
     <ClInclude Include="..\include\SystemModule\IOFile.h" />
     <ClInclude Include="..\include\SystemModule\WinSockImpl.h" />
@@ -91,7 +95,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\Common\CommonFunction.cpp" />
     <ClCompile Include="..\include\Common\ErrorHandle.cpp" />
+    <ClCompile Include="..\include\HttpModule\HttpServer.cpp" />
+    <ClCompile Include="..\include\HttpModule\HttpStruct.cpp" />
     <ClCompile Include="..\include\SystemModule\IOFile.cpp" />
     <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp" />
     <ClCompile Include="ServerSide.cpp" />

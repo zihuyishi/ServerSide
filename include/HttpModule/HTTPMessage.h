@@ -1,5 +1,8 @@
+#include "..\Common\ZDef.h"
+
 #ifndef HTTP_HTTPMESSAGE_HEADER
 #define HTTP_HTTPMESSAGE_HEADER
+ZHTTPBEGIN
 namespace HTTPMessage
 {
 	enum StatusCode
@@ -17,6 +20,14 @@ namespace HTTPMessage
 		BadGateway = 502,
 		GatewayTimeout = 504,
 	};
+	enum RestMethod
+	{
+		GET = 0,
+		POST = 1,
+		PUT = 2,
+		DELETE = 3,
+		BAD = -1,
+	};
 }
-
+ZHTTPEND
 #endif

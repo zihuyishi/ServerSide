@@ -19,6 +19,12 @@
     <Filter Include="SocketTest">
       <UniqueIdentifier>{516ce3ac-dc3a-4178-8ba0-63e03c330c25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HttpServerTest">
+      <UniqueIdentifier>{ed5b0b30-5848-47d4-933f-e30f1173e4aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CommonTest">
+      <UniqueIdentifier>{d5329582-a189-4d5d-839c-dcbedb7aed1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,6 +51,21 @@
     <ClInclude Include="..\include\HttpModule\IWebConnect.h">
       <Filter>SocketTest</Filter>
     </ClInclude>
+    <ClInclude Include="RegexTest.h">
+      <Filter>HttpServerTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\HttpModule\HttpStruct.h">
+      <Filter>HttpServerTest</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionTEst.h">
+      <Filter>CommonTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Common\CommonFunction.h">
+      <Filter>CommonTest</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpServerTest.h">
+      <Filter>HttpServerTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -64,6 +85,21 @@
     </ClCompile>
     <ClCompile Include="..\include\SystemModule\WinSockImpl.cpp">
       <Filter>SocketTest</Filter>
+    </ClCompile>
+    <ClCompile Include="RegexTest.cpp">
+      <Filter>HttpServerTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\HttpModule\HttpStruct.cpp">
+      <Filter>HttpServerTest</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionTest.cpp">
+      <Filter>CommonTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Common\CommonFunction.cpp">
+      <Filter>CommonTest</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpServerTest.cpp">
+      <Filter>HttpServerTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

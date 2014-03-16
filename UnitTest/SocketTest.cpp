@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <assert.h>
 #include <process.h>
+#include "..\include\HttpModule\HttpServer.h"
 using namespace ZHttp;
 struct SOCKETPARAM {
 	IWebSocket* s;
