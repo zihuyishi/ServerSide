@@ -58,7 +58,7 @@ auto CURI::GetURI() const->ZStringA
 {
 	return m_uri;
 }
-const QUERYTABLE& CURI::GetQueryTable() const
+auto CURI::GetQueryTable() const->const QUERYTABLE&
 {
 	return m_query;
 }
