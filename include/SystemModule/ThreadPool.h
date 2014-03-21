@@ -35,8 +35,11 @@ private:
 	typedef struct tagPoolParam {
 		ThisType*		pThis;
 		PPTASK			pTask;
-		tagPoolParam(ThisType* p, PPTASK t) :
-			pThis(p), pTask(t)
+		HANDLE			*pHandle;
+		HANDLE			bUseEvent;
+		tagPoolParam(ThisType* p, PPTASK t, HANDLE* h, HANDLE e) :
+			pThis(p), pTask(t), 
+			pHandle(h), bUseEvent(e)
 		{}
 	} PoolParam, *PPoolParam;
 

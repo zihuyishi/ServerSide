@@ -52,10 +52,12 @@ unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 		ZUInt uiThread;
 		//传入自己和每个线程的Task
 		PPTASK task = nullptr;
-		PPoolParam poolParam = new PoolParam(pThis, task);
-		HANDLE hThread = (HANDLE)_beginthreadex(NULL,
+		HANDLE hThread;
+		HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		PPoolParam poolParam = new PoolParam(pThis, task, &hThread, hEvent);
+		hThread = (HANDLE)_beginthreadex(NULL,
 			0, &ThisType::poolThread, poolParam, 
-			CREATE_SUSPENDED, &uiThread);
+			0, &uiThread);
 
 		if (hThread == nullptr) {
 			--i; --countTry;
@@ -63,10 +65,13 @@ unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 		}
 		else {
 			assert(hThread != nullptr);
+			WaitForSingleObject(hEvent, 1000);
 			pThis->m_threadQueue.push(hThread);
 			pThis->m_taskMap.insert(std::make_pair(
 				hThread, task));
+			CloseHandle(hEvent);
 		}
+		
 	}
 
 	//init statue
@@ -107,14 +112,18 @@ unsigned __stdcall CThreadPool::poolThread(void* lpParam)
 	PPoolParam poolParam = static_cast<PPoolParam>(lpParam);
 	ThisType *pThis = poolParam->pThis;
 	PTASK *pTask = poolParam->pTask;
+	HANDLE hMyHandle = *(poolParam->pHandle);
+	SetEvent(poolParam->bUseEvent);
 	do {
 		if (*pTask == nullptr) {
 			continue;
 		}
 		else {
 			(*pTask)->first((*pTask)->second);
+			delete *pTask;
 			*pTask = nullptr;
 			//todo 处理一下，把自己push进可用的队列
+			pThis->m_threadQueue.push(hMyHandle);
 		}
 	} while (1);
 
