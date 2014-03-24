@@ -66,6 +66,9 @@
     <ClInclude Include="..\include\SystemModule\ThreadPool.h">
       <Filter>SystemModule</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Common\Container.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="..\include\SystemModule\ThreadPool.cpp">
       <Filter>SystemModule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\Common\Container.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	FunctionTest();
 	RegTest();
 	FileTest();
-	//SocketTest();
+	SocketTest();
 	int i;
 	std::cin >> i;
 	return 0;

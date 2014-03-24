@@ -27,8 +27,10 @@ CThreadPool::CThreadPool() :
 m_bStop(ZTrue), m_hEvent(nullptr),
 m_thread(nullptr)
 {
-	m_threadMutex = CreateMutex(NULL, FALSE, NULL);
-	m_taskMutex = CreateMutex(NULL, FALSE, NULL);
+#ifndef NDEBUG
+	m_taskCount = 0;
+	m_taskDone = 0;
+#endif
 }
 CThreadPool::~CThreadPool()
 {
@@ -36,11 +38,53 @@ CThreadPool::~CThreadPool()
 		CloseHandle(m_thread);
 		m_thread = nullptr;
 	}
-	CloseHandle(m_threadMutex);
-	CloseHandle(m_taskMutex);
+	for each(auto hThread in m_allThreads) {
+		if (hThread != nullptr) {
+			HANDLE hEvent = m_signedMap.at(hThread);
+			CloseHandle(hEvent);
+			CloseHandle(hThread);
+		}
+	}
+	
 }
 ZBool CThreadPool::Create(ZInt threadNum)
 {
+	m_bStop = ZFalse;
+	//create thread pool
+	ZInt countTry = CThreadPool::m_cReTry;
+	for (ZInt i = 0; i < threadNum; ++i) {
+		ZUInt uiThread;
+		//传入自己和每个线程的Task
+		PPTASK task = new PTASK;
+		*task = nullptr;
+		HANDLE hThread;
+		HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		PPoolParam poolParam = new PoolParam(this, task, &hThread, hEvent);
+		hThread = (HANDLE)_beginthreadex(NULL,
+			0, &ThisType::poolThread, poolParam,
+			0, &uiThread);
+
+		if (hThread == nullptr) {
+			--i; --countTry;
+			if (countTry == 0) { break; }
+		}
+		else {
+			//WaitForSingleObject(hEvent, 1000);
+			WaitForSingleObject(hEvent, INFINITE);
+			SuspendThread(hThread);
+			m_threadQueue.push(hThread);
+			m_allThreads.push_back(hThread);
+			m_taskMap.insert(std::make_pair(
+				hThread, task));
+			m_signedMap.insert(std::make_pair(hThread, hEvent));
+		}
+
+	}
+
+	//init statue
+	m_threadNum = threadNum + countTry - m_cReTry;  //计算实际创建的线程数
+
+	//create main thread
 	PMainParam lpParam = new MainParam(this, threadNum);
 	ZUInt uiThread;
 	m_hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -58,8 +102,30 @@ ZBool CThreadPool::Create(ZInt threadNum)
 }
 void CThreadPool::AddTask(threadTask task, void* lpParam)
 {
-	assert(m_thread != nullptr);
 	m_taskQueue.push(std::make_pair(task, lpParam));
+#ifndef NDEBUG
+	m_taskCount++;
+#endif
+}
+void CThreadPool::Stop()
+{
+	m_bStop = ZTrue;
+}
+void CThreadPool::WaitAllTaskDone(ZUInt uiMS)
+{
+	while (!m_taskQueue.empty())
+	{
+	}
+}
+void CThreadPool::WaitAllThreadDone(ZUInt uiMS)
+{
+	for each(auto hThread in m_allThreads) {
+		if (hThread == nullptr) continue;
+		WaitForSingleObject(hThread, uiMS);
+	}
+}
+void CThreadPool::Release() {
+	delete this;
 }
 unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 {
@@ -71,71 +137,48 @@ unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 	ZInt threadNum = param->number;
 	delete param; param = nullptr;
 
-	//create thread pool
-	ZInt countTry = CThreadPool::m_cReTry;
-	for (ZInt i = 0; i < threadNum; ++i) {
-		ZUInt uiThread;
-		//传入自己和每个线程的Task
-		PPTASK task = new PTASK;
-		*task = nullptr;
-		HANDLE hThread;
-		HANDLE hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-		PPoolParam poolParam = new PoolParam(pThis, task, &hThread, hEvent);
-		hThread = (HANDLE)_beginthreadex(NULL,
-			0, &ThisType::poolThread, poolParam, 
-			0, &uiThread);
-
-		if (hThread == nullptr) {
-			--i; --countTry;
-			if (countTry == 0) { break; }
-		}
-		else {
-			//succeed create a thread
-			assert(hThread != nullptr);
-			//WaitForSingleObject(hEvent, 1000);
-			WaitForSingleObject(hEvent, INFINITE);
-			SuspendThread(hThread);
-			pThis->m_threadQueue.push(hThread);
-			pThis->m_taskMap.insert(std::make_pair(
-				hThread, task));
-			CloseHandle(hEvent);
-		}
-		
-	}
-
-	//init statue
-	pThis->m_bStop = ZFalse;
-	pThis->m_threadNum = threadNum + countTry - m_cReTry;  //计算实际创建的线程数
 	SetEvent(pThis->m_hEvent);
 	//loop
 	while (!pThis->m_bStop)
 	{
 		//first find a task
-		if (pThis->m_taskQueue.empty()) {
+		TASK task;
+		bool bRet = pThis->m_taskQueue.front(&task);
+		if (!bRet) {
 			continue;
 		}
-		TASK task = pThis->m_taskQueue.front();
-		//pThis->m_taskQueue.pop();
-		InterQueuePop(pThis->m_taskQueue, pThis->m_taskMutex);
+		pThis->m_taskQueue.pop();
 
 		//now find a free thread
-		while (pThis->m_threadQueue.empty()) {
+		HANDLE freeHandle;
+		while ( !pThis->m_threadQueue.front(&freeHandle) ) {
 			continue;
 		}
-		//get it!
-		HANDLE freeHandle = pThis->m_threadQueue.front();
-		//pThis->m_threadQueue.pop();
-		InterQueuePop(pThis->m_threadQueue, pThis->m_threadMutex);
+		pThis->m_threadQueue.pop();
 
 		//give task to thread
 		auto threadTask = pThis->m_taskMap.at(freeHandle);
+		HANDLE threadEvent = pThis->m_signedMap.at(freeHandle);
+		assert(threadEvent != nullptr);
 		assert(threadTask != nullptr);
 		assert(*threadTask == nullptr);
 		*threadTask = new TASK;
 		(*threadTask)->operator=(task);
+		ResetEvent(threadEvent);
 		ResumeThread(freeHandle);
-	}
 
+#ifndef NDEBUG
+		pThis->m_taskDone++;
+#endif
+	}
+	for each (auto hThread in pThis->m_allThreads) {
+		if (hThread != nullptr) {
+			HANDLE hEvent = pThis->m_signedMap.at(hThread);
+			std::cout << "#" << hThread << std::endl;
+			WaitForSingleObject(hEvent, INFINITE);
+			ResumeThread(hThread);
+		}
+	}
 	return 0;
 }
 
@@ -145,9 +188,12 @@ unsigned __stdcall CThreadPool::poolThread(void* lpParam)
 	PPoolParam poolParam = static_cast<PPoolParam>(lpParam);
 	ThisType *pThis = poolParam->pThis;
 	PTASK *pTask;
+	assert(poolParam->pTask != nullptr);
 	pTask = poolParam->pTask;
 	HANDLE hMyHandle = *(poolParam->pHandle);
-	SetEvent(poolParam->bUseEvent);
+	HANDLE hMyEvent = poolParam->bUseEvent;
+	SetEvent(hMyEvent);
+	delete poolParam;
 
 	do {
 		if (*pTask == nullptr) {
@@ -157,14 +203,15 @@ unsigned __stdcall CThreadPool::poolThread(void* lpParam)
 			(*pTask)->first((*pTask)->second);
 			delete *pTask;
 			*pTask = nullptr;
-			//todo 处理一下，把自己push进可用的队列
-			//pThis->m_threadQueue.push(hMyHandle);
-			InterQueuePush(pThis->m_threadQueue, hMyHandle, pThis->m_threadMutex);
+			//todo 处理一下，把自己push进线程的队列
+			pThis->m_threadQueue.push(hMyHandle);
+			SetEvent(hMyEvent);
+			std::cout << "@" << hMyHandle << std::endl;
 			SuspendThread(hMyHandle);
 		}
-	} while (1);
+	} while (!pThis->m_bStop);
 
-
+	delete pTask;
 	return 0;
 }
 unsigned __stdcall CThreadPool::doNothing(void* lpParam)

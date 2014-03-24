@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\Common\CommonFunction.h" />
     <ClInclude Include="..\include\Common\commonRegex.h" />
+    <ClInclude Include="..\include\Common\Container.h" />
     <ClInclude Include="..\include\Common\ErrorHandle.h" />
     <ClInclude Include="..\include\Common\ZDef.h" />
     <ClInclude Include="..\include\HttpModule\HTTPMessage.h" />
@@ -97,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\include\Common\CommonFunction.cpp" />
+    <ClCompile Include="..\include\Common\Container.cpp" />
     <ClCompile Include="..\include\Common\ErrorHandle.cpp" />
     <ClCompile Include="..\include\HttpModule\HttpServer.cpp" />
     <ClCompile Include="..\include\HttpModule\HttpStruct.cpp" />

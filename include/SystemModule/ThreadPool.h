@@ -1,5 +1,7 @@
 #include "..\Common\ZDef.h"
+#include "..\Common\Container.h"
 #include <iostream>
+#include <vector>
 #include <queue>
 #include <map>
 #include <functional>
@@ -19,10 +21,12 @@ public:
 	typedef unsigned(__stdcall *threadTask)(void*);
 	typedef CThreadPool						ThisType;
 private:
-	typedef std::queue<HANDLE>				THREADQUEUE;
+	typedef SafeQueue<HANDLE>				THREADQUEUE;
+	typedef std::vector<HANDLE>				THREADVECTOR;
 	typedef std::pair<threadTask, void*>	TASK, *PTASK, **PPTASK;
-	typedef std::queue<TASK>				TASKQUEUE;
+	typedef SafeQueue<TASK>					TASKQUEUE;
 	typedef std::map<HANDLE, PPTASK>		TASKMAP;
+	typedef std::map<HANDLE, HANDLE>		SIGNEDMAP;
 
 	typedef struct tagMainParam {
 		ThisType*		pThis;
@@ -44,10 +48,9 @@ private:
 	} PoolParam, *PPoolParam;
 
 	THREADQUEUE								m_threadQueue;		//可用线程队列
-	THREADQUEUE								m_finishQueue;		//做完任务的线程队列
+	SIGNEDMAP								m_signedMap;
+	THREADVECTOR							m_allThreads;
 	TASKQUEUE								m_taskQueue;		//待完成的任务队列
-	HANDLE									m_threadMutex;		//
-	HANDLE									m_taskMutex;		//
 	TASKMAP									m_taskMap;			//线程队列和任务表
 	HANDLE									m_thread;			//控制线程
 	HANDLE									m_hEvent;			//同步信号 
@@ -57,11 +60,26 @@ private:
 	static ZInt								m_cReTry;			//Create时如创建线程失败重试的总共次数
 	static TASK								m_nullTask;
 public:
+#ifndef NDEBUG
+	ZInt									m_taskCount;
+	ZInt									m_taskDone;
+#endif
+public:
 	~CThreadPool();
 	CThreadPool();
 public:
 	ZBool Create(ZInt threadNum);
 	void AddTask(threadTask task, void* lpParam);
+	void Stop();
+	/**
+	等待已经安排的所有任务做完
+	*/
+	void WaitAllTaskDone(ZUInt uiMS = INFINITE);
+	/**
+	Stop()后等待所有的线程结束
+	*/
+	void WaitAllThreadDone(ZUInt uiMS = INFINITE);
+	void Release();
 private:
 	static unsigned __stdcall mainThread(void* lpParam);
 	static unsigned __stdcall poolThread(void* lpParam);
