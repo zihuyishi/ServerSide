@@ -9,11 +9,14 @@
 #include "HttpServerTest.h"
 int _tmain(int argc, _TCHAR* argv[])
 {
+	ThreadPoolTest();
 	HttpServerTest();
 	FunctionTest();
 	RegTest();
 	FileTest();
-	SocketTest();
+	//SocketTest();
+	int i;
+	std::cin >> i;
 	return 0;
 }
 

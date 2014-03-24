@@ -46,8 +46,11 @@ private:
 	THREADQUEUE								m_threadQueue;		//可用线程队列
 	THREADQUEUE								m_finishQueue;		//做完任务的线程队列
 	TASKQUEUE								m_taskQueue;		//待完成的任务队列
+	HANDLE									m_threadMutex;		//
+	HANDLE									m_taskMutex;		//
 	TASKMAP									m_taskMap;			//线程队列和任务表
 	HANDLE									m_thread;			//控制线程
+	HANDLE									m_hEvent;			//同步信号 
 	ZInt									m_threadNum;		//线程池线程数
 	ZBool									m_bStop;			//是否停下
 

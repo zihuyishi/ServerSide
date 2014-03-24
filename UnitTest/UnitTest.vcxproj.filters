@@ -66,6 +66,12 @@
     <ClInclude Include="HttpServerTest.h">
       <Filter>HttpServerTest</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadPoolTest.h">
+      <Filter>CommonTest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SystemModule\ThreadPool.h">
+      <Filter>CommonTest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,6 +106,12 @@
     </ClCompile>
     <ClCompile Include="HttpServerTest.cpp">
       <Filter>HttpServerTest</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPoolTest.cpp">
+      <Filter>CommonTest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\SystemModule\ThreadPool.cpp">
+      <Filter>CommonTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
