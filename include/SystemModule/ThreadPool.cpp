@@ -71,7 +71,7 @@ ZBool CThreadPool::Create(ZInt threadNum)
 		else {
 			//WaitForSingleObject(hEvent, 1000);
 			WaitForSingleObject(hEvent, INFINITE);
-			SuspendThread(hThread);
+			ResetEvent(hEvent);
 			m_threadQueue.push(hThread);
 			m_allThreads.push_back(hThread);
 			m_taskMap.insert(std::make_pair(
@@ -162,10 +162,9 @@ unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 		assert(threadEvent != nullptr);
 		assert(threadTask != nullptr);
 		assert(*threadTask == nullptr);
-		*threadTask = new TASK;
-		(*threadTask)->operator=(task);
-		ResetEvent(threadEvent);
-		ResumeThread(freeHandle);
+		*threadTask = new TASK(task);
+		//(*threadTask)->operator=(task);
+		SetEvent(threadEvent);
 
 #ifndef NDEBUG
 		pThis->m_taskDone++;
@@ -174,9 +173,7 @@ unsigned __stdcall CThreadPool::mainThread(void* lpParam)
 	for each (auto hThread in pThis->m_allThreads) {
 		if (hThread != nullptr) {
 			HANDLE hEvent = pThis->m_signedMap.at(hThread);
-			std::cout << "#" << hThread << std::endl;
-			WaitForSingleObject(hEvent, INFINITE);
-			ResumeThread(hThread);
+			SetEvent(hEvent);
 		}
 	}
 	return 0;
@@ -196,6 +193,7 @@ unsigned __stdcall CThreadPool::poolThread(void* lpParam)
 	delete poolParam;
 
 	do {
+		WaitForSingleObject(hMyEvent, INFINITE);
 		if (*pTask == nullptr) {
 			continue;
 		}
@@ -205,9 +203,7 @@ unsigned __stdcall CThreadPool::poolThread(void* lpParam)
 			*pTask = nullptr;
 			//todo 处理一下，把自己push进线程的队列
 			pThis->m_threadQueue.push(hMyHandle);
-			SetEvent(hMyEvent);
-			std::cout << "@" << hMyHandle << std::endl;
-			SuspendThread(hMyHandle);
+			ResetEvent(hMyEvent);
 		}
 	} while (!pThis->m_bStop);
 

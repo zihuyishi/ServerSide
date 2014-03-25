@@ -51,5 +51,5 @@ void ThreadPoolTest2()
 void ThreadPoolTest()
 {
 	ThreadPoolTest1();
-	//ThreadPoolTest2();
+	ThreadPoolTest2();
 }
